@@ -7,11 +7,14 @@ import {
   styled
 } from '@mui/material';
 import { Button } from '../../components/Button';
+import bgImg from '../../assets/images/bg.avif';
 
 const Wrapper = styled(Box)(({ theme }) => ({
   position: "absolute",
-  // backgroundImage: "linear-gradient(to right, #FFFAF0, #FFFFFF, #FFFAF0)",
-  height: "80vh",
+  backgroundImage: `url(${bgImg})`,
+  backgroundSize: 'cover',
+  backgroundRepeat: 'no-repeat',
+  height: "70vh",
   width: "100%",
   paddingTop: "15rem",
   [theme.breakpoints.down("md")]: {

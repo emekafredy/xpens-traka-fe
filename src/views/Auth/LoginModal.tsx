@@ -1,20 +1,26 @@
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import {
   Modal,
   Typography,
   Box,
   TextField,
-  Button,
   Grid,
   Link,
   styled,
   Divider,
 } from '@mui/material';
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
+import { useForm, SubmitHandler } from 'react-hook-form';
+import { TypeOf } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { LoadingButton } from '@mui/lab';
 import { loginUser } from '../../api/auth';
 import { setUser, getUserAuthState } from '../../store/slices/user';
 import { useSelector, useDispatch } from 'react-redux';
 import { renderErrorMessage, renderSuccessMessage } from '../../lib/utils';
+import { loginSchema } from '../../validation/auth';
+
+type LoginInputs = TypeOf<typeof loginSchema>;
 
 interface ILoginModalProps {
   open: boolean;
@@ -59,19 +65,23 @@ export const LoginModal:FC<ILoginModalProps> = ({
 
   if (isAuthenticated) setOpen(false);
 
-  const handleSubmit = async (event: {
-    preventDefault: () => void;
-    currentTarget: HTMLFormElement | undefined;
-  }) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
+  const {
+    register,
+    formState: { errors, isSubmitSuccessful },
+    reset,
+    handleSubmit,
+  } = useForm<LoginInputs>({
+    resolver: zodResolver(loginSchema),
+  });
 
-    const userData = {
-      email: data.get("email") as string,
-      password: data.get("password") as string,
-      username: data.get("username") as string
+  useEffect(() => {
+    if (isSubmitSuccessful) {
+      reset();
     }
-    const result = await loginUser(userData)
+  }, [isSubmitSuccessful, reset]);
+
+  const onSubmitHandler: SubmitHandler<LoginInputs> = async (values) => {
+    const result = await loginUser(values)
     if (result.success) {
       await dispatch(
         setUser({
@@ -110,8 +120,8 @@ export const LoginModal:FC<ILoginModalProps> = ({
         </Typography>
         <Box
           component="form"
-          onSubmit={handleSubmit}
           noValidate
+          onSubmit={handleSubmit(onSubmitHandler)}
         >
           <TextField
             margin="normal"
@@ -119,31 +129,35 @@ export const LoginModal:FC<ILoginModalProps> = ({
             fullWidth
             id="email"
             label="Email Address"
-            name="email"
             autoComplete="email"
             autoFocus
+            error={!!errors['email']}
+            helperText={errors['email'] ? errors['email'].message : ''}
+            {...register('email')}
           />
 
           <TextField
             margin="normal"
             required
             fullWidth
-            name="password"
             label="Password"
             type="password"
             id="password"
             autoComplete="current-password"
+            error={!!errors['password']}
+            helperText={errors['password'] ? errors['password'].message : ''}
+            {...register('password')}
           />
 
-          <Button
+          <LoadingButton
             type="submit"
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
-            disabled={submitting}
+            loading={submitting}
           >
             Sign In
-          </Button>
+          </LoadingButton>
 
           <Grid>
             Don't have an account? 

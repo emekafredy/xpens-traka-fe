@@ -1,20 +1,26 @@
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import {
-  Modal,
-  Typography,
   Box,
   TextField,
-  Button,
+  Typography,
+  styled,
+  Modal,
+  Divider,
   Grid,
   Link,
-  styled,
-  Divider,
 } from '@mui/material';
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
+import { useForm, SubmitHandler } from 'react-hook-form';
+import { TypeOf } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { LoadingButton } from '@mui/lab';
 import { signUpUser } from '../../api/auth';
 import { setUser, getUserAuthState } from '../../store/slices/user';
 import { useSelector, useDispatch } from 'react-redux';
 import { renderErrorMessage, renderSuccessMessage } from '../../lib/utils';
+import { signUpSchema } from '../../validation/auth';
+
+type SignUpInputs = TypeOf<typeof signUpSchema>;
 
 interface ISignUpModalProps {
   open: boolean;
@@ -58,22 +64,24 @@ export const SignUpModal:FC<ISignUpModalProps> = ({
   const dispatch = useDispatch();
 
   if (isAuthenticated) setOpen(false);
+  const {
+    register,
+    formState: { errors, isSubmitSuccessful },
+    reset,
+    handleSubmit,
+  } = useForm<SignUpInputs>({
+    resolver: zodResolver(signUpSchema),
+  });
 
-  const handleSubmit = async (event: {
-    preventDefault: () => void;
-    currentTarget: HTMLFormElement | undefined;
-  }) => {
-    event.preventDefault();
-
-    setSubmitting(true);
-    const data = new FormData(event.currentTarget);
-
-    const userData = {
-      email: data.get("email") as string,
-      password: data.get("password") as string,
-      username: data.get("username") as string
+  useEffect(() => {
+    if (isSubmitSuccessful) {
+      reset();
     }
-    const result = await signUpUser(userData)
+  }, [isSubmitSuccessful, reset]);
+
+  const onSubmitHandler: SubmitHandler<SignUpInputs> = async (values) => {
+    setSubmitting(true);
+    const result = await signUpUser(values)
 
     if (result.success) {
       await dispatch(
@@ -113,8 +121,8 @@ export const SignUpModal:FC<ISignUpModalProps> = ({
         </Typography>
         <Box
           component="form"
-          onSubmit={handleSubmit}
           noValidate
+          onSubmit={handleSubmit(onSubmitHandler)}
         >
           <TextField
             margin="normal"
@@ -122,9 +130,11 @@ export const SignUpModal:FC<ISignUpModalProps> = ({
             fullWidth
             id="email"
             label="Email Address"
-            name="email"
             autoComplete="email"
             autoFocus
+            error={!!errors['email']}
+            helperText={errors['email'] ? errors['email'].message : ''}
+            {...register('email')}
           />
 
           <TextField
@@ -133,31 +143,49 @@ export const SignUpModal:FC<ISignUpModalProps> = ({
             fullWidth
             id="username"
             label="Username"
-            name="username"
             autoComplete="username"
-            autoFocus
+            error={!!errors['username']}
+            helperText={errors['username'] ? errors['username'].message : ''}
+            {...register('username')}
           />
 
           <TextField
             margin="normal"
             required
             fullWidth
-            name="password"
             label="Password"
             type="password"
             id="password"
             autoComplete="current-password"
+            error={!!errors['password']}
+            helperText={errors['password'] ? errors['password'].message : ''}
+            {...register('password')}
           />
 
-          <Button
-            type="submit"
+          <TextField
+            margin="normal"
+            required
             fullWidth
-            variant="contained"
+            label="Confirm Password"
+            type="password"
+            id="passwordConfirm"
+            autoComplete="current-password"
+            error={!!errors['passwordConfirm']}
+            helperText={
+              errors['passwordConfirm'] ? errors['passwordConfirm'].message : ''
+            }
+            {...register('passwordConfirm')}
+          />
+
+          <LoadingButton
+            type='submit'
+            fullWidth
+            variant='contained'
+            loading={submitting}
             sx={{ mt: 3, mb: 2 }}
-            disabled={submitting}
           >
             Sign Up
-          </Button>
+          </LoadingButton>
 
           <Grid>
             Already have an account? 
