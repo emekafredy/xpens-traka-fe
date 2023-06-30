@@ -10,20 +10,25 @@ import {
   Avatar,
   Button,
   Tooltip,
-  MenuItem
+  MenuItem,
+  Link
 } from '@mui/material';
 import {
   AccountBalanceWallet as AccountBalanceWalletIcon,
   Menu as MenuIcon
 } from '@mui/icons-material';
+import { useSelector, useDispatch } from 'react-redux';
+import { getUserAuthState, setUser } from '../store/slices/user';
+import { renderSuccessMessage } from '../lib/utils';
 
 const pages = ['Incomes', 'Expenses', 'Budgets'];
 const settings = ['Account', 'Dashboard', 'Logout'];
-const isAuthenticated = true;
 
 export const Navigation:FC = () => {
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
+  const { isAuthenticated, user } = useSelector(getUserAuthState);
+  const dispatch = useDispatch();
 
   const handleOpenNavMenu = (event: MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -39,6 +44,22 @@ export const Navigation:FC = () => {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+
+  const logUserOut = async () => {
+    await localStorage.removeItem('authToken');
+    dispatch(
+      setUser({
+        isAuthenticated: false,
+      })
+    );
+    renderSuccessMessage("User logout successful");
+  }
+
+  const handleOptionClick = (setting: string) => {
+    if (setting === 'Logout') {
+      return logUserOut();
+    }
+  }
 
   return (
     <AppBar
@@ -143,11 +164,16 @@ export const Navigation:FC = () => {
               </Box>
 
               <Box sx={{ flexGrow: 0 }}>
-                <Tooltip title="Open settings">
-                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                    <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-                  </IconButton>
-                </Tooltip>
+                <Link onClick={handleOpenUserMenu} color="#FFFFFF">
+                  <Tooltip title="Open settings">
+                    <IconButton sx={{ p: 0 }}>
+                      <Avatar alt="Remy Sharp" src="" sx={{ width: 35, height: 35 }} />
+                    </IconButton>
+                  </Tooltip>
+                  <Typography textAlign="center" variant="caption" ml={1}>
+                    Hi, {' '} {user?.attributes?.username}
+                  </Typography>
+                </Link>
                 <Menu
                   sx={{ mt: '45px' }}
                   id="menu-appbar"
@@ -166,7 +192,12 @@ export const Navigation:FC = () => {
                 >
                   {settings.map((setting) => (
                     <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                      <Typography textAlign="center">{setting}</Typography>
+                      <Typography
+                        textAlign="center"
+                        onClick={() => handleOptionClick(setting)}
+                      >
+                          {setting}
+                      </Typography>
                     </MenuItem>
                   ))}
                 </Menu>

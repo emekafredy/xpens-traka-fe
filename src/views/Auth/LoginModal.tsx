@@ -11,11 +11,17 @@ import {
   Divider,
 } from '@mui/material';
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
+import { loginUser } from '../../api/auth';
+import { setUser, getUserAuthState } from '../../store/slices/user';
+import { useSelector, useDispatch } from 'react-redux';
+import { renderErrorMessage, renderSuccessMessage } from '../../lib/utils';
 
 interface ILoginModalProps {
   open: boolean;
   setOpen: (val: boolean) => void;
   openSignUpModal: (val: boolean) => void;
+  submitting: boolean;
+  setSubmitting: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const Wrapper = styled(Box)(({ theme }) => ({
@@ -44,18 +50,42 @@ const Wrapper = styled(Box)(({ theme }) => ({
 export const LoginModal:FC<ILoginModalProps> = ({
   open,
   setOpen,
-  openSignUpModal
+  openSignUpModal,
+  submitting,
+  setSubmitting
 }) => {
-  const handleSubmit = (event: {
+  const { isAuthenticated } = useSelector(getUserAuthState);
+  const dispatch = useDispatch();
+
+  if (isAuthenticated) setOpen(false);
+
+  const handleSubmit = async (event: {
     preventDefault: () => void;
     currentTarget: HTMLFormElement | undefined;
   }) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+
+    const userData = {
+      email: data.get("email") as string,
+      password: data.get("password") as string,
+      username: data.get("username") as string
+    }
+    const result = await loginUser(userData)
+    if (result.success) {
+      await dispatch(
+        setUser({
+          user: result?.data?.data,
+          isAuthenticated: true,
+        })
+      );
+      renderSuccessMessage("User Login Successful");
+      setOpen(false);
+      setSubmitting(false);
+    } else {
+      renderErrorMessage(result.error);
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -110,6 +140,7 @@ export const LoginModal:FC<ILoginModalProps> = ({
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
+            disabled={submitting}
           >
             Sign In
           </Button>
