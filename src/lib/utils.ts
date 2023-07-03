@@ -27,3 +27,7 @@ export const renderSuccessMessage = (
 ): void => {
   toast.success(message);
 };
+
+export const addCommasToNumbers = (n: number | string) => {
+  return `₦${n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}` || '';
+}

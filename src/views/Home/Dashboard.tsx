@@ -1,53 +1,39 @@
 import { FC } from 'react';
 import {
-  Typography,
   Box,
+  Typography,
   styled
 } from '@mui/material';
+import { TransactionSummaries } from '../../components/TransactionSummaries';
+import { RecentTransactions } from '../../components/RecentTransactions';
+import { useSelector } from 'react-redux';
+import { getUserAuthState } from '../../store/slices/user';
 
 const Wrapper = styled(Box)(({ theme }) => ({
-  position: "absolute",
-  // backgroundImage: "linear-gradient(to right, #FFFAF0, #FFFFFF, #FFFAF0)",
   height: "80vh",
-  width: "100%",
-  paddingTop: "15rem",
+  paddingTop: "5rem",
+  width: "90%",
+  margin: "auto",
   [theme.breakpoints.down("md")]: {
-    paddingTop: "15rem",
+    paddingTop: "5rem",
+    width: "100%",
   },
   [theme.breakpoints.up("lg")]: {
-    paddingTop: "20rem",
+    paddingTop: "5rem",
+    width: "90%",
   },
 }));
-
-
-const TypographyHeader = styled(Typography)(({ theme }) => ({
-  textAlign: "center",
-  fontSize: "5em",
-  fontWeight: "bold",
-  fontFamily: "revert",
-  [theme.breakpoints.down("sm")]: {
-    fontSize: "2rem",
-  },
-  [theme.breakpoints.down("md")]: {
-    fontSize: "3rem",
-  },
-  [theme.breakpoints.up("lg")]: {
-    fontSize: "5em",
-  },
-}));
-
-
-// interface IDashboardProps {
-//   setLoginModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
-//   setSignUpModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
-// }
 
 export const Dashboard:FC = () => {
+  const { user } = useSelector(getUserAuthState);
+
   return (
     <Wrapper>
-      <TypographyHeader>
-        Dashboard OOOO
-      </TypographyHeader>
+      <TransactionSummaries user={user} />
+      <Typography fontWeight="bold">
+        Recent Transactions
+      </Typography>
+      <RecentTransactions recentTransactions={user?.attributes?.recentTransactions || []}/>
     </Wrapper>
   );
 }
