@@ -17,7 +17,13 @@ const initialState: UserProps = {
       username: '',
       createdDate: '',
       authToken: '',
+      incomesTotal: '',
+      expensesTotal: '',
       recentTransactions: [],
+      monthlyGrouped: {
+        incomes: [],
+        expenses: [],
+      }
     }
   },
   isAuthenticated: false

@@ -1,41 +1,46 @@
 import { FC } from 'react';
 import ReactApexChart from 'react-apexcharts';
 
-export const RecentsChart:FC = () => {
+interface IRecentsChartProps {
+  title: string;
+  chartData: any[];
+}
+
+export const RecentsChart:FC<IRecentsChartProps> = ({ title, chartData }) => {
+  const categories = chartData.flatMap(Object.keys) || [];
+  const values = chartData.flatMap(Object.values);
+  const colors = title === 'Income' ? ['#00A300'] : ['#FF0000'];
+
   const options = {
     chart: {
-      height: 350,
+      height: 400,
       zoom: {
-        enabled: true
+        enabled: false
       }
+    },
+    dataLabels: {
+      enabled: true,
+    },
+    colors: colors,
+    title: {
+      text: `${title} Transactions in recent months`,
+      algin: 'left'
+    },
+    grid: {
+      row: {
+        colors: ['#f3f3f3', 'transparent'],
+        opacity: 0.5
+      },
     },
     xaxis: {
-      categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
-      title: {
-        text: 'Month'
-      }
+      categories: categories,
     },
-    yaxis: {
-      title: {
-        text: 'Amount'
-      },
-      min: 5,
-      max: 40
-    },
-    title: {
-      text: 'Transactions on recent months',
-      algin: 'left'
-    }
   };
 
   const series = [
     {
-      name: "Income - 2013",
-      data: [28, 29, 33, 36, 32, 32, 33]
-    },
-    {
-      name: "Expenses - 2013",
-      data: [12, 11, 14, 18, 17, 13, 13]
+      name: `${title}`,
+      data: values || []
     }
   ];
 
@@ -44,7 +49,7 @@ export const RecentsChart:FC = () => {
         type="line"
         options={options}
         series={series}
-        height={350}
+        height={400}
       />
   );
 };

@@ -49,13 +49,19 @@ export interface UserObject {
     username: string;
     createdDate: string;
     authToken: string;
+    incomesTotal: number | string;
+    expensesTotal: number | string;
     recentTransactions: {
       transactionId: string;
-      amount: number;
+      amount: number | string;
       transactionType: string;
       date: string;
       category: string;
     }[];
+    monthlyGrouped: {
+      incomes: any[];
+      expenses: any[];
+    }
   }
 }
 

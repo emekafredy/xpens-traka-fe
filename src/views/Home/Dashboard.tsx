@@ -1,10 +1,13 @@
 import { FC } from 'react';
 import {
   Box,
+  Typography,
   styled
 } from '@mui/material';
 import { TransactionSummaries } from '../../components/TransactionSummaries';
 import { RecentTransactions } from '../../components/RecentTransactions';
+import { useSelector } from 'react-redux';
+import { getUserAuthState } from '../../store/slices/user';
 
 const Wrapper = styled(Box)(({ theme }) => ({
   height: "80vh",
@@ -22,10 +25,15 @@ const Wrapper = styled(Box)(({ theme }) => ({
 }));
 
 export const Dashboard:FC = () => {
+  const { user } = useSelector(getUserAuthState);
+
   return (
     <Wrapper>
-      <TransactionSummaries />
-      <RecentTransactions />
+      <TransactionSummaries user={user} />
+      <Typography fontWeight="bold">
+        Recent Transactions
+      </Typography>
+      <RecentTransactions recentTransactions={user?.attributes?.recentTransactions || []}/>
     </Wrapper>
   );
 }

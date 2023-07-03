@@ -1,30 +1,31 @@
 import { FC } from 'react';
 import { Box, Grid } from '@mui/material';
-import { InfoCard } from './InfoCard';
 import { RecentsChart } from './RecentsChart';
+import { UserObject } from '../interfaces/user';
 
-export const TransactionSummaries:FC = () => {
+interface ITransactionSummariesProps {
+  user?: UserObject;
+}
+
+export const TransactionSummaries:FC<ITransactionSummariesProps> = ({ user }) => {
   return (
-    <Box sx={{ flexGrow: 1 }} mb={4}>
-      <Grid container spacing={2}>
-        <Grid item xs={7} sx={{ boxShadow: 3 }}>
-          <RecentsChart />
+    <Box style={{ marginBottom: '2rem' }}>
+      <Grid
+        container
+        columnGap={2}
+      >
+        <Grid item xs={5.5}>
+          <RecentsChart
+            title="Income"
+            chartData={user?.attributes?.monthlyGrouped?.incomes || []}
+          />
         </Grid>
-        <Grid item xs={5}>
-          <Box height="50%">
-            <InfoCard
-              title="Problems completed today"
-              value={5}
-              footer={<div> 24% increase from yesterday </div>}
-            />
-          </Box>
-          <Box height="50%">
-            <InfoCard
-              title="Total Assignment completed"
-              value={`98/130`}
-              footer={<div> 8% increase from yesterday </div>}
-            />
-          </Box>
+
+        <Grid item xs={5.5}>
+          <RecentsChart
+            title="Expense"
+            chartData={user?.attributes?.monthlyGrouped?.expenses || []}
+          />
         </Grid>
       </Grid>
     </Box>
