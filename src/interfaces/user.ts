@@ -49,6 +49,13 @@ export interface UserObject {
     username: string;
     createdDate: string;
     authToken: string;
+    recentTransactions: {
+      transactionId: string;
+      amount: number;
+      transactionType: string;
+      date: string;
+      category: string;
+    }[];
   }
 }
 

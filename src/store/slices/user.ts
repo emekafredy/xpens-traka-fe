@@ -17,6 +17,7 @@ const initialState: UserProps = {
       username: '',
       createdDate: '',
       authToken: '',
+      recentTransactions: [],
     }
   },
   isAuthenticated: false
