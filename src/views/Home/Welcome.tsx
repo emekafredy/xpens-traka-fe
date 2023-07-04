@@ -14,9 +14,9 @@ const Wrapper = styled(Box)(({ theme }) => ({
   backgroundImage: `url(${bgImg})`,
   backgroundSize: 'cover',
   backgroundRepeat: 'no-repeat',
-  height: "70vh",
   width: "100%",
   paddingTop: "15rem",
+  height: "60vh",
   [theme.breakpoints.down("md")]: {
     paddingTop: "15rem",
   },

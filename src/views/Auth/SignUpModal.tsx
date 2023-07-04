@@ -19,6 +19,7 @@ import { setUser, getUserAuthState } from '../../store/slices/user';
 import { useSelector, useDispatch } from 'react-redux';
 import { renderErrorMessage, renderSuccessMessage } from '../../lib/utils';
 import { signUpSchema } from '../../validation/auth';
+import { UserObject } from '../../interfaces/user';
 
 type SignUpInputs = TypeOf<typeof signUpSchema>;
 
@@ -86,7 +87,7 @@ export const SignUpModal:FC<ISignUpModalProps> = ({
     if (result.success) {
       await dispatch(
         setUser({
-          user: result?.data?.data,
+          user: result?.data?.data as UserObject,
           isAuthenticated: true,
         })
       );

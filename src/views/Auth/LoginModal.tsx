@@ -19,6 +19,7 @@ import { setUser, getUserAuthState } from '../../store/slices/user';
 import { useSelector, useDispatch } from 'react-redux';
 import { renderErrorMessage, renderSuccessMessage } from '../../lib/utils';
 import { loginSchema } from '../../validation/auth';
+import { UserObject } from '../../interfaces/user';
 
 type LoginInputs = TypeOf<typeof loginSchema>;
 
@@ -85,7 +86,7 @@ export const LoginModal:FC<ILoginModalProps> = ({
     if (result.success) {
       await dispatch(
         setUser({
-          user: result?.data?.data,
+          user: result?.data?.data as UserObject,
           isAuthenticated: true,
         })
       );
