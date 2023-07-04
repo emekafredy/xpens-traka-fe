@@ -1,4 +1,4 @@
-import { object, string } from 'zod';
+import { object, string, any } from 'zod';
 
 export const signUpSchema = object({
   email: string().nonempty('Email is required').email('Email is invalid'),
@@ -10,6 +10,7 @@ export const signUpSchema = object({
   username: string()
     .nonempty('Name is required')
     .max(32, 'Name must be less than 100 characters'),
+  avatar: any()
 }).refine((data) => data.password === data.passwordConfirm, {
   path: ['passwordConfirm'],
   message: 'Passwords do not match',

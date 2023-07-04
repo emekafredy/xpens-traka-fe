@@ -19,7 +19,7 @@ import { ITransactionPaginatedProps } from '../interfaces/transaction';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
-    backgroundColor: "#48018A",
+    backgroundColor: "#1876D1",
     color: theme.palette.common.white
   },
   [`&.${tableCellClasses.body}`]: {
@@ -89,7 +89,7 @@ export const CommonTable:FC<ICommonTableProps> = ({
                 count={data?.meta?.pagination?.total_pages || 0}
                 page={page}
                 onChange={handleChange} 
-                color="secondary"
+                color="primary"
               />
           </Box>
         )}

@@ -62,14 +62,14 @@ export const Navigation:FC = () => {
 
   return (
     <AppBar
-      position="static"
       style={{
-        background: 'linear-gradient(to right bottom, #430089, #9C27B0)'
+        background: 'linear-gradient(to right bottom, #F5F5DC, #F9F6EE, #FFFFFF, #FAF9F6)',
+        position: "fixed",
       }}
     >
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <AccountBalanceWalletIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
+          <AccountBalanceWalletIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1, color: '#1876D1' }} />
           <Typography
             variant="h6"
             noWrap
@@ -81,7 +81,7 @@ export const Navigation:FC = () => {
               fontFamily: 'monospace',
               fontWeight: 700,
               letterSpacing: '.3rem',
-              color: 'inherit',
+              color: '#1876D1',
               textDecoration: 'none',
             }}
           >
@@ -125,14 +125,15 @@ export const Navigation:FC = () => {
                     href={`/${page}`}
                     sx={{
                       my: 2,
-                      color: 'black',
+                      // color: 'black',
                       display: 'block',
                       cursor: 'pointer',
                       textTransform: 'uppercase',
                       textDecoration: 'none',
                       fontWeight: 'bold',
                       px: 2,
-                      borderBottom: '1px solid'
+                      borderBottom: '1px solid',
+                      color: '#1876D1'
                     }}
                   >
                     <Typography textAlign="center">{page}</Typography>
@@ -173,7 +174,8 @@ export const Navigation:FC = () => {
                     href={`/${page}`}
                     sx={{
                       my: 2,
-                      color: 'white',
+                      // color: 'white',
+                      color: '#1876D1',
                       display: 'block',
                       mr: 6,
                       cursor: 'pointer',
@@ -194,7 +196,7 @@ export const Navigation:FC = () => {
                       <Avatar alt="Remy Sharp" src="" sx={{ width: 35, height: 35 }} />
                     </IconButton>
                   </Tooltip>
-                  <Typography textAlign="center" variant="caption" ml={1}>
+                  <Typography textAlign="center" variant="caption" ml={1} sx={{ color: '#1876D1' }}>
                     Hi, {' '} {user?.attributes?.username}
                   </Typography>
                 </Link>
@@ -219,6 +221,7 @@ export const Navigation:FC = () => {
                       <Typography
                         textAlign="center"
                         onClick={() => handleOptionClick(setting)}
+                        sx={{ color: '#1876D1' }}
                       >
                           {setting}
                       </Typography>

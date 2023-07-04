@@ -10,15 +10,15 @@ import { useSelector } from 'react-redux';
 import { getUserAuthState } from '../../store/slices/user';
 
 const Wrapper = styled(Box)(({ theme }) => ({
-  paddingTop: "5rem",
+  paddingTop: "10rem",
   width: "90%",
   margin: "auto",
   [theme.breakpoints.down("md")]: {
-    paddingTop: "5rem",
+    paddingTop: "8rem",
     width: "100%",
   },
   [theme.breakpoints.up("lg")]: {
-    paddingTop: "5rem",
+    paddingTop: "8rem",
     width: "90%",
   },
 }));

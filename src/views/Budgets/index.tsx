@@ -7,9 +7,9 @@ import {
 } from '@mui/material';
 import { userTransactions } from '../../hooks/transaction';
 import { Loader } from '../../components/Loader';
-import { TransactionsTable } from './TransactionsTable';
+import { BudgetsTable } from './BudgetsTable';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
-import { CreateTransactionModal } from './CreateTransactionModal';
+import { CreateBudgetModal } from './CreateBudgetModal';
 
 const Wrapper = styled(Box)(({ theme }) => ({
   paddingTop: "8rem",
@@ -25,7 +25,7 @@ const Wrapper = styled(Box)(({ theme }) => ({
   },
 }));
 
-export const Transactions:FC = () => {
+export const Budgets:FC = () => {
   const [page, setPage] = useState(1);
   const [createTransactionModalOpen, setCreateTransactionModalOpen] = useState<boolean>(false);
   const path = window.location.pathname?.slice(1) || ''
@@ -67,13 +67,13 @@ export const Transactions:FC = () => {
               Add {path} {'  '} <AddCircleIcon />
             </Button>
           </Box>
-          <TransactionsTable
+          <BudgetsTable
             page={page}
             handleChange={handleChange}
           />
         </>
       )}
-      <CreateTransactionModal
+      <CreateBudgetModal
         open={createTransactionModalOpen}
         setOpen={setCreateTransactionModalOpen}
         title={path}

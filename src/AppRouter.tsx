@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { Home } from './views/Home';
 import { Transactions } from './views/Transactions';
 import Protected from './components/Protected';
+import { Budgets } from './views/Budgets';
 
 export const AppRouter:FC = () => {
   return (
@@ -21,6 +22,13 @@ export const AppRouter:FC = () => {
           element={
             <Protected>
               <Transactions />
+            </Protected>
+        }/>
+        <Route
+          path='/Budget'
+          element={
+            <Protected>
+              <Budgets />
             </Protected>
         }/>
       </Routes>

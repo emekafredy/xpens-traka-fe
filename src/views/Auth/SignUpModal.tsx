@@ -1,4 +1,4 @@
-import { FC, useEffect } from 'react';
+import { FC, useEffect, useState } from 'react';
 import {
   Box,
   TextField,
@@ -8,6 +8,7 @@ import {
   Divider,
   Grid,
   Link,
+  Button
 } from '@mui/material';
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import { useForm, SubmitHandler } from 'react-hook-form';
@@ -20,6 +21,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { renderErrorMessage, renderSuccessMessage } from '../../lib/utils';
 import { signUpSchema } from '../../validation/auth';
 import { UserObject } from '../../interfaces/user';
+import Avatar from '../../assets/images/avatar.jpeg';
 
 type SignUpInputs = TypeOf<typeof signUpSchema>;
 
@@ -35,7 +37,7 @@ const Wrapper = styled(Box)(({ theme }) => ({
   backgroundColor: "#FFFFFF",
   width: "30%",
   margin: "auto",
-  marginTop: "10rem",
+  marginTop: "4rem",
   padding: "4em",
   borderRadius: "5px",
   [theme.breakpoints.down("sm")]: {
@@ -61,6 +63,7 @@ export const SignUpModal:FC<ISignUpModalProps> = ({
   submitting,
   setSubmitting
 }) => {
+  const [ imageUrl, setImageUrl ] = useState('');
   const { isAuthenticated } = useSelector(getUserAuthState);
   const dispatch = useDispatch();
 
@@ -70,6 +73,7 @@ export const SignUpModal:FC<ISignUpModalProps> = ({
     formState: { errors, isSubmitSuccessful },
     reset,
     handleSubmit,
+    setValue
   } = useForm<SignUpInputs>({
     resolver: zodResolver(signUpSchema),
   });
@@ -80,8 +84,17 @@ export const SignUpModal:FC<ISignUpModalProps> = ({
     }
   }, [isSubmitSuccessful, reset]);
 
+  const handleImageChange = (event: any) => {
+    const file = event.target.files[0];
+    console.log('ghhhhh', event.target.avatar);
+    console.log('filee', file);
+    setValue('avatar', file);
+    setImageUrl(URL.createObjectURL(file));
+  }
+
   const onSubmitHandler: SubmitHandler<SignUpInputs> = async (values) => {
     setSubmitting(true);
+    console.log('values', values);
     const result = await signUpUser(values)
 
     if (result.success) {
@@ -125,6 +138,36 @@ export const SignUpModal:FC<ISignUpModalProps> = ({
           noValidate
           onSubmit={handleSubmit(onSubmitHandler)}
         >
+          <Box style={{ textAlign: "center" }}>
+            <Box
+              component="img"
+              sx={{
+                height: 200,
+                width: 200,
+                display: "block",
+                textAlign: "center",
+                margin: "auto",
+                borderRadius: "100%",
+                marginBottom: "1rem"
+              }}
+              alt="user avatar"
+              src={imageUrl || Avatar}
+            />
+            <Button
+              variant="contained"
+              component="label"
+            >
+              Select Avatar
+              <input
+                accept="image/*"
+                type="file"
+                name="avatar"
+                hidden
+                onChange={(e) => handleImageChange(e)}
+              />
+            </Button>
+          </Box>
+
           <TextField
             margin="normal"
             required
