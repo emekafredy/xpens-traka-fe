@@ -2,6 +2,7 @@ export interface IAuthProps {
   email: string;
   password: string;
   username?: string;
+  avatar?: any;
 }
 
 export interface UserAuthResponse {

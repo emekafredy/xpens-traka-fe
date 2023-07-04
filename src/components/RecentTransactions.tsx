@@ -14,7 +14,7 @@ import { addCommasToNumbers } from '../lib/utils';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
-    backgroundColor: "#48018A",
+    backgroundColor: "#1876D1",
     color: theme.palette.common.white
   },
   [`&.${tableCellClasses.body}`]: {
