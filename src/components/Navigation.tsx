@@ -8,7 +8,6 @@ import {
   Menu,
   Container,
   Avatar,
-  Button,
   Tooltip,
   MenuItem,
   Link
@@ -21,7 +20,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { getUserAuthState, setUser } from '../store/slices/user';
 import { renderSuccessMessage } from '../lib/utils';
 
-const pages = ['Incomes', 'Expenses', 'Budgets'];
+const pages = ['Income', 'Expense', 'Budget'];
 const settings = ['Account', 'Dashboard', 'Logout'];
 
 export const Navigation:FC = () => {
@@ -77,7 +76,7 @@ export const Navigation:FC = () => {
             component="a"
             href="/"
             sx={{
-              mr: 2,
+              mr: 4,
               display: { xs: 'none', md: 'flex' },
               fontFamily: 'monospace',
               fontWeight: 700,
@@ -120,9 +119,24 @@ export const Navigation:FC = () => {
                 }}
               >
                 {pages.map((page) => (
-                  <MenuItem key={page} onClick={handleCloseNavMenu}>
+                  <Link
+                    key={page}
+                    onClick={handleCloseNavMenu}
+                    href={`/${page}`}
+                    sx={{
+                      my: 2,
+                      color: 'black',
+                      display: 'block',
+                      cursor: 'pointer',
+                      textTransform: 'uppercase',
+                      textDecoration: 'none',
+                      fontWeight: 'bold',
+                      px: 2,
+                      borderBottom: '1px solid'
+                    }}
+                  >
                     <Typography textAlign="center">{page}</Typography>
-                  </MenuItem>
+                  </Link>
                 ))}
               </Menu>
             </Box>
@@ -143,7 +157,7 @@ export const Navigation:FC = () => {
               fontWeight: 700,
               letterSpacing: '.3rem',
               color: 'inherit',
-              textDecoration: 'none',
+              textDecoration: 'none'
             }}
           >
             X-Traka
@@ -153,13 +167,23 @@ export const Navigation:FC = () => {
             <>
               <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                 {pages.map((page) => (
-                  <Button
+                  <Link
                     key={page}
                     onClick={handleCloseNavMenu}
-                    sx={{ my: 2, color: 'white', display: 'block' }}
+                    href={`/${page}`}
+                    sx={{
+                      my: 2,
+                      color: 'white',
+                      display: 'block',
+                      mr: 6,
+                      cursor: 'pointer',
+                      textTransform: 'uppercase',
+                      textDecoration: 'none',
+                      fontWeight: 'bold',
+                    }}
                   >
                     {page}
-                  </Button>
+                  </Link>
                 ))}
               </Box>
 

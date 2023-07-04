@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import {
   Box,
   Typography,
@@ -10,7 +10,6 @@ import { useSelector } from 'react-redux';
 import { getUserAuthState } from '../../store/slices/user';
 
 const Wrapper = styled(Box)(({ theme }) => ({
-  height: "80vh",
   paddingTop: "5rem",
   width: "90%",
   margin: "auto",
@@ -27,13 +26,17 @@ const Wrapper = styled(Box)(({ theme }) => ({
 export const Dashboard:FC = () => {
   const { user } = useSelector(getUserAuthState);
 
+  useEffect(() => {
+    user
+  }, [user?.attributes?.recentTransactions]);
+
   return (
     <Wrapper>
       <TransactionSummaries user={user} />
       <Typography fontWeight="bold">
         Recent Transactions
       </Typography>
-      <RecentTransactions recentTransactions={user?.attributes?.recentTransactions || []}/>
+      <RecentTransactions recentTransactions={user?.attributes?.recentTransactions}/>
     </Wrapper>
   );
 }

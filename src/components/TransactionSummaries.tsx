@@ -14,7 +14,7 @@ export const TransactionSummaries:FC<ITransactionSummariesProps> = ({ user }) =>
         container
         columnGap={2}
       >
-        <Grid item xs={5.5}>
+        <Grid item xs={5.5} sx={{ mr: 8 }}>
           <RecentsChart
             title="Income"
             chartData={user?.attributes?.monthlyGrouped?.incomes || []}

@@ -32,7 +32,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 interface IRecenttransactionsProps {
-  recentTransactions: {
+  recentTransactions?: {
     transactionId: string;
     amount: number | string;
     transactionType: string;

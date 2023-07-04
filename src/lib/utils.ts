@@ -1,5 +1,5 @@
 import { toast } from 'react-toastify';
-import { ErrorResponse } from '../interfaces/user';
+import { ErrorResponse } from '../interfaces/common';
 
 export const returnError = (
 	error: unknown
@@ -29,5 +29,5 @@ export const renderSuccessMessage = (
 };
 
 export const addCommasToNumbers = (n: number | string) => {
-  return `₦${n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}` || '';
+  return `₦${n?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}` || '';
 }

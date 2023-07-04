@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { getUserAccount } from '../api/user';
 import { setUser } from '../store/slices/user';
+import { UserObject } from '../interfaces/user';
 
 export const authUser = () => {
 	const [loading, setLoading] = useState(true);
@@ -16,7 +17,7 @@ export const authUser = () => {
 
 			dispatch(
 				setUser({
-					user: user?.data,
+					user: user?.data as UserObject,
 					isAuthenticated: true,
 				})
 			);

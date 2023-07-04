@@ -4,16 +4,6 @@ export interface IAuthProps {
   username?: string;
 }
 
-export interface ErrorResponse {
-  response: {
-    data: {
-      status: {
-        message: string;
-      }
-    }
-  }
-}
-
 export interface UserAuthResponse {
   data?: {
     data: {
